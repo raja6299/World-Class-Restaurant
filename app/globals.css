@@ -15,20 +15,31 @@ html {
 }
 
 body {
-  background-color: #f5f0e8;
-  color: #3d3d3d;
+  background-color: #FAF7F2;
+  color: #3E3128;
   overflow-x: hidden;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+  color: #2A2A2A;
+}
+
+p {
+  color: #3E3128;
+  opacity: 0.9;
 }
 
 /* ─── Selection color ─── */
 ::selection {
-  background-color: rgba(212, 175, 55, 0.3);
-  color: #2d2d2d;
+  background-color: rgba(196, 167, 125, 0.3);
+  color: #2A2A2A;
 }
 
 /* ─── Focus visible for accessibility ─── */
 :focus-visible {
-  outline: 2px solid #d4af37;
+  outline: 2px solid #C4A77D;
   outline-offset: 2px;
 }
 
@@ -38,22 +49,25 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f5f0e8;
+  background: #FAF7F2;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(212, 175, 55, 0.4);
+  background: rgba(196, 167, 125, 0.4);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #d4af37;
+  background: #C4A77D;
 }
 
 /* ─── Utility classes ─── */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .signature-font {
+    font-family: var(--font-signature), cursive;
   }
 }
 

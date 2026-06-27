@@ -1,95 +1,129 @@
 'use client';
 
 import { useRef } from 'react';
-import Image from 'next/image';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
 import { CHEF } from '@/lib/utils/constants';
-import { fadeInUp, scaleXGrow } from '@/lib/utils/animations';
+import AnimatedImage from '@/components/shared/AnimatedImage';
 
 export default function ChefStorySection() {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
-  const imgRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const sectionRef = useRef<HTMLDivElement>(null);
+  
   const { scrollYProgress } = useScroll({
-    target: imgRef,
+    target: sectionRef,
     offset: ['start end', 'end start'],
   });
-  const imgY = useTransform(scrollYProgress, [0, 1], [30, -30]);
+  
+  const imgY1 = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const imgY2 = useTransform(scrollYProgress, [0, 1], [-20, 20]);
 
   const bioParagraphs = CHEF.bio.split('\n\n');
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: 'spring' as const, stiffness: 40, damping: 20 },
+    },
+  };
+
   return (
-    <section id="chef-story" className="py-24 px-6 lg:px-12 max-w-7xl mx-auto">
+    <section id="chef-story" ref={sectionRef} className="py-32 px-6 lg:px-12 bg-aurum-ivory relative overflow-hidden">
       <motion.div
         ref={ref}
+        variants={containerVariants}
         initial="hidden"
         animate={isInView ? 'visible' : 'hidden'}
-        className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center"
+        className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center relative z-10"
       >
-        {/* Image Column */}
-        <div ref={imgRef}>
-          <motion.div variants={fadeInUp} className="relative">
-            <motion.div style={{ y: imgY }}>
-              <div className="rounded-xl overflow-hidden border-[8px] border-aurum-gold-primary">
-                <Image
-                  src={CHEF.image}
-                  alt={`Chef ${CHEF.name}`}
-                  width={600}
-                  height={750}
-                  className="w-full h-auto object-cover"
-                  priority
-                />
-              </div>
-            </motion.div>
+        {/* Images Column - Editorial Overlap Layout */}
+        <div className="lg:col-span-6 relative h-[600px] md:h-[800px] flex items-center justify-center">
+          {/* Main Portrait */}
+          <motion.div style={{ y: imgY1 }} className="absolute left-0 w-3/4 h-[80%] z-10">
+            <div className="relative w-full h-full rounded-sm overflow-hidden shadow-aurum-md">
+              <AnimatedImage
+                src={CHEF.image}
+                alt={`Chef ${CHEF.name}`}
+                fill
+                priority
+              />
+            </div>
           </motion.div>
-          <motion.div
-            variants={fadeInUp}
-            className="mt-6 w-3/4 ml-auto rounded-lg overflow-hidden border-2 border-[rgba(212,175,55,0.2)]"
-          >
-            <Image
-              src={CHEF.kitchenImage}
-              alt={`${CHEF.name} in the kitchen`}
-              width={450}
-              height={300}
-              className="w-full h-auto object-cover"
-            />
+          
+          {/* Secondary Action Shot */}
+          <motion.div style={{ y: imgY2 }} className="absolute right-0 bottom-[10%] w-2/5 h-2/5 z-20">
+            <div className="relative w-full h-full rounded-sm overflow-hidden shadow-aurum-lg border-4 border-aurum-ivory">
+              <AnimatedImage
+                src={CHEF.kitchenImage}
+                alt={`${CHEF.name} in action`}
+                fill
+              />
+            </div>
           </motion.div>
         </div>
 
-        {/* Text Column */}
-        <div>
+        {/* Text Column - Editorial Typography */}
+        <div className="lg:col-span-6 flex flex-col justify-center">
           <motion.h2
-            variants={fadeInUp}
-            className="font-playfair text-3xl md:text-4xl lg:text-5xl text-aurum-text-heading"
+            variants={itemVariants}
+            className="font-playfair text-4xl md:text-5xl lg:text-7xl text-aurum-charcoal font-medium tracking-[-0.02em] leading-tight mb-4"
           >
-            Chef {CHEF.name}&apos;s Journey
+            The Visionary<br />
+            <span className="text-aurum-gold italic font-light">Behind Aurum</span>
           </motion.h2>
 
           <motion.div
-            variants={scaleXGrow}
-            className="w-[60px] h-[3px] bg-aurum-gold-primary my-6 origin-left"
+            variants={itemVariants}
+            className="w-[80px] h-[1px] bg-aurum-gold my-8"
           />
 
-          {bioParagraphs.map((para, i) => (
-            <motion.p
-              key={i}
-              variants={fadeInUp}
-              className="text-lg text-aurum-text-body leading-relaxed mb-5"
-            >
-              {para}
-            </motion.p>
-          ))}
-
           <motion.blockquote
-            variants={fadeInUp}
-            className="border-l-4 border-aurum-gold-primary pl-6 my-8"
+            variants={itemVariants}
+            className="mb-10 relative"
           >
-            <p className="font-playfair text-xl md:text-2xl text-aurum-gold-brass italic leading-relaxed">
-              &ldquo;{CHEF.quote}&rdquo;
+            <span className="absolute -top-6 -left-4 text-6xl text-aurum-gold/20 font-playfair">&ldquo;</span>
+            <p className="font-playfair text-xl md:text-2xl text-aurum-charcoal/90 italic leading-relaxed relative z-10">
+              {CHEF.quote}
             </p>
           </motion.blockquote>
+
+          <div className="space-y-6">
+            {bioParagraphs.map((para, i) => (
+              <motion.p
+                key={i}
+                variants={itemVariants}
+                className={`text-base md:text-lg text-aurum-charcoal/70 leading-relaxed font-light ${i === 0 ? "first-letter:text-5xl first-letter:font-playfair first-letter:text-aurum-gold first-letter:float-left first-letter:mr-2 first-letter:mt-[-4px]" : ""}`}
+              >
+                {para}
+              </motion.p>
+            ))}
+          </div>
+          
+          <motion.div variants={itemVariants} className="mt-12">
+            <p className="font-playfair text-3xl text-aurum-charcoal signature-font tracking-widest">
+              {CHEF.name}
+            </p>
+            <p className="text-xs uppercase tracking-[3px] text-aurum-gold mt-2 font-semibold">
+              Executive Chef
+            </p>
+          </motion.div>
         </div>
       </motion.div>
+      
+      {/* Decorative background typography */}
+      <div className="absolute -right-20 top-20 text-[250px] font-playfair text-aurum-charcoal/[0.02] font-bold tracking-tighter -rotate-90 origin-right pointer-events-none select-none z-0">
+        AURUM
+      </div>
     </section>
   );
 }

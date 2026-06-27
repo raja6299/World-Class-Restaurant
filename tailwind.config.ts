@@ -10,17 +10,14 @@ const config: Config = {
     extend: {
       colors: {
         aurum: {
-          'cream-primary': '#f5f0e8',
-          'cream-secondary': '#efe9e0',
-          'text-body': '#3d3d3d',
-          'text-heading': '#2d2d2d',
-          'gold-primary': '#d4af37',
-          'gold-brass': '#c9a574',
-          'gold-earthy': '#8b6f47',
-          'energy-orange': '#e67e22',
-          'energy-deep': '#c1440e',
-          'dark-navy': '#2d4a7c',
-          'dark-brown': '#4a3728',
+          'ivory': '#FAF7F2',
+          'cream': '#FDFBF7',
+          'beige': '#EFEBE1',
+          'champagne': '#E8DCC4',
+          'gold': '#C4A77D',
+          'olive': '#4A533E',
+          'brown': '#3E3128',
+          'charcoal': '#2A2A2A',
         },
       },
       fontFamily: {

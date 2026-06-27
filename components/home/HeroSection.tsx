@@ -1,93 +1,110 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { RESTAURANT } from '@/lib/utils/constants';
-import Button from '@/components/shared/Button';
+import Link from 'next/link';
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true });
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
   });
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  
+  // Subtle parallax for background and content
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  const fadeUp = (delay: number) => ({
-    initial: { opacity: 0, y: 20 },
-    animate: isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
-    transition: { duration: 0.6, ease: 'easeOut' as const, delay },
-  });
+  // Luxury slow-spring reveal
+  const revealVariants = {
+    hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
+    visible: (custom: number) => ({
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: { 
+        delay: custom * 0.15,
+        type: 'spring' as const,
+        stiffness: 40,
+        damping: 20,
+        mass: 1
+      },
+    }),
+  };
 
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-aurum-charcoal"
       aria-label={`Welcome to ${RESTAURANT.name}`}
     >
-      {/* Background with gradient + subtle gold radials */}
-      <div className="absolute inset-0 bg-gradient-to-b from-aurum-cream-primary to-aurum-cream-secondary z-0" />
-      <div
-        className="absolute inset-0 z-0 opacity-60"
-        style={{
-          background:
-            'radial-gradient(ellipse at 20% 50%, rgba(212,175,55,0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(201,165,116,0.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 80%, rgba(212,175,55,0.04) 0%, transparent 50%)',
-        }}
-      />
+      {/* Background Image / Video Fallback */}
+      <motion.div style={{ y: bgY }} className="absolute inset-0 w-full h-full z-0">
+        <Image
+          src="https://images.unsplash.com/photo-1545247181-516773cae754?w=1920&h=1080&fit=crop&q=90"
+          alt="AURUM Culinary Experience"
+          fill
+          priority
+          className="object-cover object-center opacity-80"
+          sizes="100vw"
+        />
+        {/* Cinematic Warm Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-aurum-charcoal/90 via-aurum-brown/40 to-aurum-charcoal/30 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-aurum-gold/10 mix-blend-overlay" />
+      </motion.div>
 
-      {/* Video background (optional — shows if file exists) */}
-      <div className="absolute inset-0 z-[1]">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="video-background opacity-30"
-          poster="/images/hero-poster.jpg"
-        >
-          <source src="/videos/hero-video.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-aurum-cream-primary/80 to-aurum-cream-primary/60" />
-      </div>
+      {/* Optional Cinematic Video (Commented out - See README for Gemini Video generation instructions) */}
+      {/* 
+      <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover z-0 opacity-80">
+        <source src="/videos/hero-cinematic.mp4" type="video/mp4" />
+      </video> 
+      */}
 
       {/* Centered Content */}
       <motion.div
-        style={{ y: contentY }}
-        className="relative z-10 text-center px-6 max-w-4xl mx-auto"
+        style={{ y: contentY, opacity: contentOpacity }}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="relative z-10 text-center px-6 max-w-5xl mx-auto flex flex-col items-center mt-12"
       >
         <motion.p
-          {...fadeUp(0)}
-          className="text-sm font-inter font-medium tracking-[4px] uppercase text-aurum-gold-primary mb-6"
+          custom={0}
+          variants={revealVariants}
+          className="text-[10px] md:text-[11px] font-semibold tracking-[4px] uppercase text-aurum-ivory/80 mb-6 md:mb-8"
         >
-          Fine Dining Experience
+          {RESTAURANT.taglineSubtitle}
         </motion.p>
 
         <motion.h1
-          {...fadeUp(0.2)}
-          className="font-playfair text-6xl md:text-7xl lg:text-8xl font-light text-aurum-text-heading tracking-tight"
+          custom={1}
+          variants={revealVariants}
+          className="font-playfair text-6xl md:text-8xl lg:text-[120px] font-medium text-aurum-ivory tracking-[-0.03em] leading-none drop-shadow-2xl"
         >
           {RESTAURANT.name}
         </motion.h1>
 
         <motion.p
-          {...fadeUp(0.4)}
-          className="font-playfair text-2xl md:text-3xl text-aurum-gold-brass italic mt-4"
+          custom={2}
+          variants={revealVariants}
+          className="font-playfair text-xl md:text-3xl text-aurum-gold italic mt-6 md:mt-10 font-light"
         >
           {RESTAURANT.tagline}
         </motion.p>
 
-        <motion.p
-          {...fadeUp(0.6)}
-          className="text-lg text-aurum-text-body/80 max-w-[600px] mx-auto mt-6 leading-relaxed"
-        >
-          {RESTAURANT.taglineSubtitle}
-        </motion.p>
-
-        <motion.div {...fadeUp(0.8)} className="mt-10">
-          <Button variant="primary" size="lg" href="#reservation">
-            Experience the Journey
-          </Button>
+        <motion.div custom={3} variants={revealVariants} className="mt-12 md:mt-16">
+          <Link 
+            href="#reservation"
+            className="group relative overflow-hidden inline-flex items-center justify-center px-10 py-4 bg-transparent border border-aurum-gold/50 text-aurum-ivory text-xs font-semibold tracking-[3px] uppercase rounded-full hover:border-aurum-gold transition-all duration-700"
+          >
+            <span className="relative z-10 group-hover:text-aurum-charcoal transition-colors duration-500">
+              Experience the Journey
+            </span>
+            <div className="absolute inset-0 bg-aurum-gold transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-700 ease-[0.19,1,0.22,1]" />
+          </Link>
         </motion.div>
       </motion.div>
 
@@ -95,14 +112,14 @@ export default function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        transition={{ delay: 2, duration: 1.5 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
       >
-        <div className="w-6 h-10 rounded-full border-2 border-aurum-gold-primary/30 flex justify-center pt-2">
+        <div className="w-[1px] h-16 bg-aurum-ivory/20 overflow-hidden relative">
           <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            className="w-1 h-2 bg-aurum-gold-primary rounded-full"
+            animate={{ y: ['-100%', '100%'] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+            className="absolute top-0 left-0 w-full h-1/2 bg-aurum-gold"
           />
         </div>
       </motion.div>

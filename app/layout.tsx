@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Playfair_Display, Inter } from 'next/font/google';
+import { Playfair_Display, Inter, Great_Vibes } from 'next/font/google';
 import './globals.css';
 import { RESTAURANT } from '@/lib/utils/constants';
 
@@ -17,6 +17,13 @@ const inter = Inter({
   weight: ['400', '500', '600', '700'],
 });
 
+const signature = Great_Vibes({
+  subsets: ['latin'],
+  variable: '--font-signature',
+  display: 'swap',
+  weight: ['400'],
+});
+
 export const metadata: Metadata = {
   title: `${RESTAURANT.name} | Premium Indian Fine Dining`,
   description: RESTAURANT.description,
@@ -30,8 +37,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="font-inter bg-aurum-cream-primary text-aurum-text-body antialiased">
+    <html lang="en" className={`${playfair.variable} ${inter.variable} ${signature.variable}`}>
+      <body className="font-inter bg-aurum-ivory text-aurum-charcoal antialiased">
         {children}
       </body>
     </html>

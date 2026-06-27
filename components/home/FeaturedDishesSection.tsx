@@ -1,68 +1,115 @@
 'use client';
 
 import { useRef } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { FEATURED_DISHES } from '@/lib/utils/constants';
-import { staggerContainer, staggerItem } from '@/lib/utils/animations';
 import SectionHeading from '@/components/shared/SectionHeading';
+import AnimatedImage from '@/components/shared/AnimatedImage';
 
 export default function FeaturedDishesSection() {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: 'spring' as const,
+        stiffness: 40,
+        damping: 20,
+      },
+    },
+  };
 
   return (
-    <section id="featured-dishes" className="py-24 px-6 lg:px-12">
-      <SectionHeading
-        title="Signature Creations"
-        subtitle="Each dish tells a story of heritage, craftsmanship, and the finest ingredients."
-      />
+    <section id="featured-dishes" className="py-32 px-6 lg:px-12 bg-aurum-charcoal relative overflow-hidden">
+      {/* Subtle background element */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-aurum-brown/10 via-aurum-charcoal to-aurum-charcoal opacity-50 z-0 pointer-events-none" />
 
-      <motion.div
-        ref={ref}
-        variants={staggerContainer}
-        initial="hidden"
-        animate={isInView ? 'visible' : 'hidden'}
-        className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 mt-12"
-      >
-        {FEATURED_DISHES.map((dish) => (
-          <motion.div
-            key={dish.id}
-            variants={staggerItem}
-            whileHover={{ scale: 1.02, boxShadow: '0 8px 16px rgba(45,45,45,0.12)' }}
-            className="group bg-aurum-cream-secondary rounded-xl overflow-hidden border border-[rgba(212,175,55,0.2)] hover:border-aurum-gold-primary transition-colors duration-200"
+      <div className="relative z-10 max-w-7xl mx-auto">
+        <SectionHeading
+          title="Signature Creations"
+          subtitle="Each dish tells a story of heritage, craftsmanship, and the finest ingredients, meticulously plated to perfection."
+          darkTheme
+        />
+
+        <motion.div
+          ref={ref}
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className="mt-20 grid grid-cols-1 md:grid-cols-12 gap-y-16 md:gap-x-12 lg:gap-x-20 items-center"
+        >
+          {FEATURED_DISHES.map((dish, index) => {
+            // Alternating grid layout to create an elegant masonry feel
+            const isEven = index % 2 === 0;
+            const imageColSpan = isEven ? 'md:col-span-7' : 'md:col-span-7 md:order-last';
+            const textColSpan = isEven ? 'md:col-span-5' : 'md:col-span-5';
+
+            return (
+              <motion.div key={dish.id} variants={itemVariants} className="contents">
+                <div className={`${imageColSpan} group cursor-pointer`}>
+                  <div className={`relative w-full overflow-hidden rounded-sm ${isEven ? 'aspect-[4/3]' : 'aspect-[3/4]'}`}>
+                    <AnimatedImage
+                      src={dish.image}
+                      alt={dish.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+
+                <div className={`${textColSpan} flex flex-col justify-center space-y-6 ${isEven ? 'md:pl-8' : 'md:pr-8'}`}>
+                  <div>
+                    <h3 className="font-playfair text-3xl md:text-4xl lg:text-5xl text-aurum-ivory font-medium tracking-wide mb-2">
+                      {dish.name}
+                    </h3>
+                    <p className="text-sm italic text-aurum-gold mb-6 font-playfair tracking-wider">
+                      {dish.tagline}
+                    </p>
+                    <div className="w-12 h-[1px] bg-aurum-gold/40 mb-6" />
+                    <p className="text-sm md:text-base text-aurum-ivory/70 leading-relaxed font-light">
+                      {dish.description}
+                    </p>
+                  </div>
+                  
+                  <div className="pt-4 flex justify-between items-center border-t border-aurum-ivory/10">
+                    <span className="text-lg font-playfair text-aurum-gold tracking-widest">{dish.price}</span>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+
+        <motion.div
+          variants={itemVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          className="mt-24 text-center"
+        >
+          <Link
+            href="/menu"
+            className="inline-flex items-center justify-center px-10 py-4 border border-aurum-gold text-aurum-ivory text-xs font-semibold tracking-[3px] uppercase hover:bg-aurum-gold hover:text-aurum-charcoal transition-all duration-500"
           >
-            <div className="relative h-[300px] overflow-hidden">
-              <Image
-                src={dish.image}
-                alt={dish.name}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
-            <div className="p-6">
-              <h3 className="font-playfair text-2xl text-aurum-text-heading mb-1">
-                {dish.name}
-              </h3>
-              <p className="text-sm italic text-aurum-gold-brass mb-3">{dish.tagline}</p>
-              <p className="text-base text-aurum-text-body/80 leading-relaxed mb-4">
-                {dish.description}
-              </p>
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold text-aurum-gold-primary">{dish.price}</span>
-                <Link
-                  href="/menu"
-                  className="text-sm text-aurum-gold-primary hover:underline transition-all duration-200"
-                >
-                  Explore Full Menu →
-                </Link>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+            Explore Full Menu
+          </Link>
+        </motion.div>
+      </div>
     </section>
   );
 }

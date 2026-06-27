@@ -24,10 +24,13 @@ export default function AnimatedImage({
 }: AnimatedImageProps) {
   return (
     <motion.div
-      whileHover={{ scale: 1.05 }}
-      transition={{ duration: 0.4 }}
-      className="overflow-hidden"
+      whileHover={{ scale: 1.03 }}
+      transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+      className={`overflow-hidden relative group ${className}`}
     >
+      {/* Global Image Grading Overlay to unify placeholder art direction */}
+      <div className="absolute inset-0 bg-[#C4A77D] mix-blend-overlay opacity-[0.15] z-10 pointer-events-none transition-opacity duration-700 group-hover:opacity-0" />
+      
       <Image
         src={src}
         alt={alt}
@@ -35,7 +38,7 @@ export default function AnimatedImage({
         height={fill ? undefined : height}
         fill={fill}
         priority={priority}
-        className={className}
+        className={`transition-transform duration-700 ease-out ${fill ? 'object-cover' : ''}`}
       />
     </motion.div>
   );
