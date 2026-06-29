@@ -45,7 +45,7 @@ export default function HeroSection() {
       {/* Background Image / Video Fallback */}
       <motion.div style={{ y: bgY }} className="absolute inset-0 w-full h-full z-0">
         <Image
-          src="https://images.unsplash.com/photo-1545247181-516773cae754?w=1920&h=1080&fit=crop&q=90"
+          src="/images/hero.webp"
           alt="AURUM Culinary Experience"
           fill
           priority
