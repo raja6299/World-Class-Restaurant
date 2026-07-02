@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { TESTIMONIALS } from '@/lib/utils/constants';
 import SectionHeading from '@/components/shared/SectionHeading';
+import AnimatedImage from '@/components/shared/AnimatedImage';
 
 export default function TestimonialSection() {
   const ref = useRef<HTMLDivElement>(null);
@@ -27,55 +28,69 @@ export default function TestimonialSection() {
   };
 
   return (
-    <section className="py-32 px-6 lg:px-12 bg-aurum-olive relative overflow-hidden">
-      <SectionHeading
-        title="Guest Stories"
-        subtitle="What our guests say about their AURUM experience."
-        darkTheme={true}
-      />
+    <section className="py-32 px-6 lg:px-12 relative overflow-hidden flex items-center min-h-[80vh]">
+      {/* Ambient Background Image */}
+      <div className="absolute inset-0 z-0">
+        <AnimatedImage
+          src="/images/restaurant_interior.webp"
+          alt="Luxury Indian restaurant interior with warm candle-lit ambiance"
+          fill
+          priority={false}
+        />
+        <div className="absolute inset-0 bg-aurum-charcoal/85 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-t from-aurum-charcoal via-transparent to-aurum-charcoal" />
+      </div>
 
-      <motion.div
-        ref={ref}
-        variants={containerVariants}
-        initial="hidden"
-        animate={isInView ? 'visible' : 'hidden'}
-        className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-7xl mx-auto mt-24 relative z-10"
-      >
-        {TESTIMONIALS.map((testimonial, i) => (
-          <motion.div
-            key={i}
-            variants={itemVariants}
-            className="flex flex-col items-center text-center px-4"
-          >
-            {/* Minimalist Stars */}
-            <div className="flex gap-2 mb-8">
-              {Array.from({ length: testimonial.rating }).map((_, s) => (
-                <span key={s} className="text-aurum-gold text-[10px]">&#10022;</span>
-              ))}
-            </div>
+      <div className="relative z-10 w-full">
+        <SectionHeading
+          title="Guest Stories"
+          subtitle="What our guests say about their AURUM experience."
+          darkTheme={true}
+        />
 
-            <p className="font-playfair text-xl md:text-2xl italic text-aurum-ivory/90 leading-relaxed mb-8 flex-grow">
-              &ldquo;{testimonial.quote}&rdquo;
-            </p>
+        <motion.div
+          ref={ref}
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-7xl mx-auto mt-24"
+        >
+          {TESTIMONIALS.map((testimonial, i) => (
+            <motion.div
+              key={i}
+              variants={itemVariants}
+              className="flex flex-col items-center text-center px-4"
+            >
+              {/* Minimalist Stars */}
+              <div className="flex gap-2 mb-8">
+                {Array.from({ length: testimonial.rating }).map((_, s) => (
+                  <span key={s} className="text-aurum-gold text-[10px]">&#10022;</span>
+                ))}
+              </div>
 
-            <div className="flex flex-col items-center">
-              <div className="w-[1px] h-8 bg-aurum-gold/30 mb-6" />
-              <p className="font-playfair text-lg text-aurum-ivory tracking-wider uppercase text-sm">
-                {testimonial.author}
+              <p className="font-playfair text-xl md:text-2xl italic text-aurum-ivory/90 leading-relaxed mb-8 flex-grow">
+                &ldquo;{testimonial.quote}&rdquo;
               </p>
-              <p className="text-xs tracking-[2px] uppercase text-aurum-gold mt-2">
-                {testimonial.occasion}
-              </p>
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+
+              <div className="flex flex-col items-center">
+                <div className="w-[1px] h-8 bg-aurum-gold/30 mb-6" />
+                <p className="font-playfair text-lg text-aurum-ivory tracking-wider uppercase text-sm">
+                  {testimonial.author}
+                </p>
+                <p className="text-xs tracking-[2px] uppercase text-aurum-gold mt-2">
+                  {testimonial.occasion}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
       
       {/* Decorative large quotes in background */}
-      <div className="absolute top-10 left-10 text-[300px] text-aurum-ivory/[0.02] font-playfair leading-none pointer-events-none z-0">
+      <div className="absolute top-10 left-10 text-[300px] text-aurum-ivory/[0.03] font-playfair leading-none pointer-events-none z-0">
         &ldquo;
       </div>
-      <div className="absolute bottom-10 right-10 text-[300px] text-aurum-ivory/[0.02] font-playfair leading-none pointer-events-none z-0 rotate-180">
+      <div className="absolute bottom-10 right-10 text-[300px] text-aurum-ivory/[0.03] font-playfair leading-none pointer-events-none z-0 rotate-180">
         &ldquo;
       </div>
     </section>

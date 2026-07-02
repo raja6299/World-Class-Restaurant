@@ -52,6 +52,7 @@ export default function GalleryPreviewSection() {
                 src={img.src}
                 alt={img.alt}
                 fill
+                sizes="(max-width: 768px) 60vw, (max-width: 1024px) 45vw, 35vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-aurum-charcoal/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
                 <p className="text-aurum-ivory font-playfair text-2xl mb-1">{img.alt}</p>

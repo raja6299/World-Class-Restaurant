@@ -11,6 +11,8 @@ interface AnimatedImageProps {
   className?: string;
   priority?: boolean;
   fill?: boolean;
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
 }
 
 export default function AnimatedImage({
@@ -21,7 +23,13 @@ export default function AnimatedImage({
   className = '',
   priority = false,
   fill = false,
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  loading,
 }: AnimatedImageProps) {
+  // If priority is true, Next.js handles loading eager automatically
+  // Otherwise, fallback to lazy loading unless explicitly specified
+  const effectiveLoading = priority ? undefined : (loading || 'lazy');
+
   return (
     <motion.div
       whileHover={{ scale: 1.03 }}
@@ -38,6 +46,8 @@ export default function AnimatedImage({
         height={fill ? undefined : height}
         fill={fill}
         priority={priority}
+        sizes={fill ? sizes : undefined}
+        loading={effectiveLoading}
         className={`transition-transform duration-700 ease-out ${fill ? 'object-cover' : ''}`}
       />
     </motion.div>
