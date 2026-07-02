@@ -1,0 +1,29 @@
+- [x] **Phase 1: Database Foundation**
+  - [x] Configure Prisma with Supabase PostgreSQL
+  - [x] Environment variable cleanup
+  - [x] Generate & run migrations
+  - [x] Centralize Prisma Client
+  - [x] Seed initial data
+- [x] **Phase 2: Authentication & RBAC**
+  - [x] Implemented Next.js middleware for SSR auth
+  - [x] Defined roles (ADMIN, MANAGER, WAITER, KITCHEN, CUSTOMER)
+- [x] **Phase 3: Customer Experience Platform**
+  - [x] **QR Session Engine**: `qr/[token]` secure initialization, session tracking
+  - [x] **Menu Engine**: Dynamic data hydration preserving luxury UI (`ClientMenu`, Server Actions)
+  - [x] **Cart Engine**: Stateful carts linked to sessions, modifier support
+  - [x] **Pricing Engine**: Centralized calculations (Item total, GST, discounts)
+  - [x] **Order Engine**: Event-driven history tracking, snapshot-based immutable order items
+  - [x] **AI Foundation**: Provider-agnostic AI service (OpenAI/Anthropic abstraction)
+  - [x] **Checkout & Live Tracking**: `checkout` flow mock and `track/[orderId]` live timeline view
+- [x] **Phase 4: Kitchen Display System (KDS)**
+  - [x] Real-time order queue
+  - [x] Waiter Client session handling
+- [x] **Phase 6: Production Hardening**
+  - [x] 1. Centralized Logger (`src/lib/logger.ts` & replacing console.*)
+  - [x] 2. Environment Configuration (Add provider flags to `env.ts`)
+  - [x] 3. Remove Mock Dependencies (Payments, POS, AI, Hardware, Notifications, Monitoring)
+  - [x] 4. Global Error System (`error.tsx`, `not-found.tsx`, `loading.tsx`)
+  - [x] 5. Security & Zod Audit (Server Actions & Middleware)
+  - [x] 6. Database Performance & N+1 Review
+  - [x] 7. Observability & Event Logging
+  - [x] 8. Final Lint & Build Verification

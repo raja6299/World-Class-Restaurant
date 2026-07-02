@@ -5,21 +5,18 @@
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db, isFirebaseConfigured } from './config';
 import type { ReservationData } from '@/lib/types';
+import { Logger, NotConfiguredError } from '@/src/lib/logger';
 
 /**
  * Submit a reservation to Firestore.
- * Falls back gracefully if Firebase is not configured.
+ * Throws NotConfiguredError if Firebase is not configured.
  */
 export async function submitReservation(
   data: Omit<ReservationData, 'status' | 'createdAt'>
 ): Promise<{ success: boolean; id?: string; error?: string }> {
   if (!isFirebaseConfigured) {
-    // Simulate success in development without Firebase
-    console.warn('[AURUM] Firebase not configured — simulating reservation submission.');
-    return {
-      success: true,
-      id: `dev-${Date.now()}`,
-    };
+    Logger.warn('[AURUM] Firebase not configured — submission failed.', 'Firebase');
+    throw new NotConfiguredError('Firebase is not configured.');
   }
 
   try {
@@ -31,7 +28,7 @@ export async function submitReservation(
 
     return { success: true, id: docRef.id };
   } catch (error) {
-    console.error('[AURUM] Firestore reservation error:', error);
+    Logger.error('[AURUM] Firestore reservation error:', error, 'Firebase');
     return {
       success: false,
       error: 'Unable to complete reservation. Please contact us directly.',
