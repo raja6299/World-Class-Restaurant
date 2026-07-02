@@ -34,7 +34,7 @@ export default function AnimatedImage({
     <motion.div
       whileHover={{ scale: 1.03 }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-      className={`overflow-hidden relative group ${className}`}
+      className={`overflow-hidden relative group ${className} ${fill ? 'w-full h-full absolute inset-0' : ''}`}
     >
       {/* Global Image Grading Overlay to unify placeholder art direction */}
       <div className="absolute inset-0 bg-[#C4A77D] mix-blend-overlay opacity-[0.15] z-10 pointer-events-none transition-opacity duration-700 group-hover:opacity-0" />
