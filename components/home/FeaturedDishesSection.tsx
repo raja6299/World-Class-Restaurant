@@ -62,7 +62,7 @@ export default function FeaturedDishesSection() {
             return (
               <motion.div key={dish.id} variants={itemVariants} className="contents">
                 <div className={`${imageColSpan} group cursor-pointer`}>
-                  <div className={`relative w-full overflow-hidden rounded-sm ${isEven ? 'aspect-[4/3]' : 'aspect-[3/4]'}`}>
+                  <div className={`relative w-full overflow-hidden rounded-sm ${index === 1 ? 'aspect-[3/4]' : 'aspect-[4/3]'}`}>
                     <AnimatedImage
                       src={dish.image}
                       alt={dish.name}
