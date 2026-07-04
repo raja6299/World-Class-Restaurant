@@ -6,12 +6,12 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
 
   // Database Configurations
-  DATABASE_URL: z.string().url("Must be a valid Postgres connection string"),
-  DIRECT_URL: z.string().url("Must be a valid Postgres direct connection string"),
+  DATABASE_URL: z.string().url("Must be a valid Postgres connection string").optional(),
+  DIRECT_URL: z.string().url("Must be a valid Postgres direct connection string").optional(),
 
   // Supabase Configurations (Authentication)
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url("Must be a valid Supabase URL"),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1, "Supabase anon key is required"),
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url("Must be a valid Supabase URL").optional(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1, "Supabase anon key is required").optional(),
 
   // Default Business Configurations (White-Label Settings)
   NEXT_PUBLIC_DEFAULT_CURRENCY: z.string().default('INR'),
