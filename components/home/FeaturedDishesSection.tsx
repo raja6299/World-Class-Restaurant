@@ -51,7 +51,7 @@ export default function FeaturedDishesSection() {
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          className="mt-20 grid grid-cols-1 md:grid-cols-12 gap-y-16 md:gap-x-12 lg:gap-x-20 items-center"
+          className="mt-20 space-y-24 md:space-y-32"
         >
           {FEATURED_DISHES.map((dish, index) => {
             // Alternating grid layout to create an elegant masonry feel
@@ -60,9 +60,9 @@ export default function FeaturedDishesSection() {
             const textColSpan = isEven ? 'md:col-span-5' : 'md:col-span-5';
 
             return (
-              <motion.div key={dish.id} variants={itemVariants} className="contents">
+              <motion.div key={dish.id} variants={itemVariants} className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-center">
                 <div className={`${imageColSpan} group cursor-pointer`}>
-                  <div className={`relative w-full overflow-hidden rounded-sm ${index === 1 ? 'aspect-[3/4]' : 'aspect-[4/3]'}`}>
+                  <div className={`relative w-full overflow-hidden rounded-sm ${index === 1 ? 'aspect-[3/4]' : 'aspect-[4/3]'} max-h-[480px]`}>
                     <AnimatedImage
                       src={dish.image}
                       alt={dish.name}
