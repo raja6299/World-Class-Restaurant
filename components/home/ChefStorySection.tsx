@@ -47,7 +47,7 @@ export default function ChefStorySection() {
         className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center relative z-10"
       >
         {/* Images Column - Editorial Overlap Layout */}
-        <div className="lg:col-span-6 relative h-[600px] md:h-[800px] flex items-center justify-center">
+        <div className="lg:col-span-6 relative h-[500px] md:h-[600px] flex items-center justify-center">
           {/* Main Portrait */}
           <motion.div style={{ y: imgY1 }} className="absolute left-0 w-3/4 h-[80%] z-10">
             <div className="relative w-full h-full rounded-sm overflow-hidden shadow-aurum-md">
