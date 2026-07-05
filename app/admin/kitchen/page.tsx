@@ -45,7 +45,7 @@ export default async function KitchenDisplayPage() {
       </header>
 
       <main className="p-6 h-[calc(100vh-100px)] overflow-x-auto">
-        <KdsClient initialOrders={activeOrders} branchId={branch.id} supabaseUrl={env.NEXT_PUBLIC_SUPABASE_URL} supabaseKey={env.NEXT_PUBLIC_SUPABASE_ANON_KEY} />
+        <KdsClient initialOrders={activeOrders} branchId={branch.id} supabaseUrl={env.NEXT_PUBLIC_SUPABASE_URL!} supabaseKey={env.NEXT_PUBLIC_SUPABASE_ANON_KEY!} />
       </main>
     </div>
   );

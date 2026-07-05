@@ -49,7 +49,7 @@ export default async function WaiterDisplayPage() {
       </header>
 
       <main className="p-6">
-        <WaiterClient initialTables={tables} branchId={branch.id} supabaseUrl={env.NEXT_PUBLIC_SUPABASE_URL} supabaseKey={env.NEXT_PUBLIC_SUPABASE_ANON_KEY} />
+        <WaiterClient initialTables={tables} branchId={branch.id} supabaseUrl={env.NEXT_PUBLIC_SUPABASE_URL!} supabaseKey={env.NEXT_PUBLIC_SUPABASE_ANON_KEY!} />
       </main>
     </div>
   );

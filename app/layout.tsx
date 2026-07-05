@@ -25,13 +25,37 @@ const signature = Great_Vibes({
 });
 
 export const metadata: Metadata = {
-  title: `${RESTAURANT.name} | Premium Indian Fine Dining`,
+  metadataBase: new URL('https://world-class-restaurant.vercel.app'),
+  title: {
+    default: `${RESTAURANT.name} | Premium Indian Fine Dining`,
+    template: `%s | ${RESTAURANT.name}`,
+  },
   description: RESTAURANT.description,
   keywords: 'Indian fine dining, premium restaurant, tasting menu, Delhi, Gurgaon, farm to table, sustainable dining',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     title: `${RESTAURANT.name} | ${RESTAURANT.tagline}`,
     description: RESTAURANT.description,
+    url: 'https://world-class-restaurant.vercel.app',
+    siteName: RESTAURANT.name,
+    images: [
+      {
+        url: '/images/hero.webp',
+        width: 1200,
+        height: 630,
+        alt: `${RESTAURANT.name} - Premium Dining Experience`,
+      },
+    ],
+    locale: 'en_IN',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${RESTAURANT.name} | Premium Indian Fine Dining`,
+    description: RESTAURANT.description,
+    images: ['/images/hero.webp'],
   },
 };
 
